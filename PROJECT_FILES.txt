@@ -1,0 +1,10 @@
+Student At-Risk Prediction project
+
+- .gitignore
+- .streamlit/config.toml
+- CODE_REVIEW.md
+- README.md
+- app.py
+- requirements.txt
+
+Dataset is not included; upload your own CSV in the app.
