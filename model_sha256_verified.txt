@@ -1,0 +1,49 @@
+SHA-256 before dependency change: bc1c582b5805dabc39072c50825477c163a5f61594ff5e3068f47920e9a76183
+SHA-256 after dependency change:  bc1c582b5805dabc39072c50825477c163a5f61594ff5e3068f47920e9a76183
+Hashes match: TRUE
+scikit-learn version at verification: 1.6.1
+Smoke test result: PASSED
+At-risk probability index (from classes_): 1
+  (Derived via np.where(classes == 1)[0]; classes_ array is [0 1])
+Feature count: 26
+Categorical columns: ['Stream', 'Higher_Education_Interest']
+  Stream categories (from fitted OHE): ['Commerce', 'Humanities', 'Science']
+  Higher_Education_Interest categories (from fitted OHE): ['High', 'Low', 'Medium']
+Numeric columns: ['Age', '10th_Percentage', '12th_Percentage', 'Math_Score', 'Science_Score',
+  'English_Score', 'Social_Studies_Score', 'Business_Studies_Score', 'Computer_Science_Score',
+  'Logical_Reasoning_Score', 'Numerical_Aptitude_Score', 'Verbal_Reasoning_Score',
+  'Spatial_Aptitude_Score', 'Abstract_Reasoning_Score', 'Mechanical_Reasoning_Score',
+  'Perceptual_Speed_Score', 'Analytical_Thinking', 'Creativity_Level', 'Attention_to_Detail',
+  'Communication_Skills', 'Attendance_Percentage', 'Assignment_Completion_Percentage',
+  'Previous_Semester_GPA', 'Previous_Assessment_Score']
+Full feature_names_in_ (order as fitted by ColumnTransformer):
+  0:  Age
+  1:  Stream
+  2:  10th_Percentage
+  3:  12th_Percentage
+  4:  Math_Score
+  5:  Science_Score
+  6:  English_Score
+  7:  Social_Studies_Score
+  8:  Business_Studies_Score
+  9:  Computer_Science_Score
+  10: Logical_Reasoning_Score
+  11: Numerical_Aptitude_Score
+  12: Verbal_Reasoning_Score
+  13: Spatial_Aptitude_Score
+  14: Abstract_Reasoning_Score
+  15: Mechanical_Reasoning_Score
+  16: Perceptual_Speed_Score
+  17: Analytical_Thinking
+  18: Creativity_Level
+  19: Attention_to_Detail
+  20: Communication_Skills
+  21: Higher_Education_Interest
+  22: Attendance_Percentage
+  23: Assignment_Completion_Percentage
+  24: Previous_Semester_GPA
+  25: Previous_Assessment_Score
+Excluded columns confirmed absent from feature_names_in_: Student_ID, Risk_Score, Gender, At_Risk
+predict() on synthetic row: shape (1,), value in {0, 1} — PASS
+predict_proba() on synthetic row: shape (1,2), sum=1.0 — PASS
+GPA range check (value 8.5 accepted without error): PASS
