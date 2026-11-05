@@ -1,8 +1,31 @@
 .venv/
 __pycache__/
-*.py[cod]
-.streamlit/secrets.toml
-*.joblib
+*.pyc
 *.pkl
-data/
-.DS_Store
+*.pickle
+*.joblib
+.streamlit/secrets.toml
+
+# Local secrets
+.streamlit/secrets.toml
+.env
+
+# Python / caches
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Local data / outputs
+data/*
+*.csv.bak
+logs/
+tmp/
+
+# Model artifact exception
+!student_risk_model.pkl
+
+# Local academic datasets — not approved for public distribution
+/training_reference.csv
+/sample_teacher_upload.csv
