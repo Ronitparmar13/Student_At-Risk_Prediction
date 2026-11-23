@@ -1,11 +1,10 @@
 import base64
-import ssl
 import html
 import os
-import smtplib
-from email.message import EmailMessage
 from pathlib import Path
 from urllib.parse import quote
+
+from gmail_api_sender import send_gmail_api_email
 import joblib
 import numpy as np
 import pandas as pd
@@ -158,7 +157,7 @@ def predict_for_choice(raw, choice):
 
 
 def send_student_email(recipient, subject, body):
-    """Send email securely using Gmail SMTP."""
+    """Send email through the Gmail API over HTTPS."""
 
     def setting(key, default=""):
         try:
@@ -166,40 +165,26 @@ def send_student_email(recipient, subject, body):
         except Exception:
             return os.getenv(key, default)
 
-    host = setting("SMTP_HOST", "smtp.gmail.com")
-    port = int(setting("SMTP_PORT", "587"))
-    username = setting("SMTP_USERNAME")
-    password = setting("SMTP_PASSWORD")
-    sender = setting("EMAIL_FROM", username)
+    client_id = setting("GMAIL_CLIENT_ID")
+    client_secret = setting("GMAIL_CLIENT_SECRET")
+    refresh_token = setting("GMAIL_REFRESH_TOKEN")
+    sender = setting("EMAIL_FROM")
 
-    if not all([host, username, password, sender]):
-        raise RuntimeError("Email configuration is incomplete.")
+    if not all([client_id, client_secret, refresh_token, sender]):
+        raise RuntimeError(
+            "Gmail API configuration is incomplete. Set GMAIL_CLIENT_ID, "
+            "GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN, and EMAIL_FROM."
+        )
 
-    message = EmailMessage()
-    message["From"] = sender
-    message["To"] = recipient
-    message["Subject"] = subject
-    message.set_content(body)
-
-    context = ssl.create_default_context()
-
-    if port == 465:
-        with smtplib.SMTP_SSL(
-            host,
-            port,
-            timeout=30,
-            context=context
-        ) as server:
-            server.login(username, password)
-            server.send_message(message)
-
-    else:
-        with smtplib.SMTP(host, port, timeout=30) as server:
-            server.ehlo()
-            server.starttls(context=context)
-            server.ehlo()
-            server.login(username, password)
-            server.send_message(message)
+    send_gmail_api_email(
+        recipient,
+        subject,
+        body,
+        client_id,
+        client_secret,
+        refresh_token,
+        sender,
+    )
 
 if "theme" not in st.session_state:
     st.session_state.theme = "Dark"

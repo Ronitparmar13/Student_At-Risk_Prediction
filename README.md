@@ -68,7 +68,7 @@ Provides a workflow to identify students requiring attention, prepare a formal p
 | Random Forest | Ensemble classification |
 | Streamlit | Interactive web application |
 | Plotly | Interactive data visualizations |
-| SMTP / Gmail | Email communication workflow |
+| Gmail API | Email communication workflow |
 
 ## ⚙️ Getting Started
 
@@ -109,9 +109,7 @@ pip install -r requirements.txt
 
 ### Configure Email Credentials
 
-Configure Gmail SMTP credentials using Streamlit secrets or environment variables.
-
-Never expose your Gmail password or app password in source code or commit it to GitHub.
+See [Student email configuration](#student-email-configuration) to configure Gmail API OAuth credentials in Streamlit secrets.
 
 ### Run the Application
 
@@ -120,6 +118,40 @@ streamlit run app.py
 ```
 
 *Note: Update the entry-point filename and repository URL to match your actual project files.*
+
+## Student email configuration
+The app sends email through the Gmail API over HTTPS, avoiding outbound SMTP
+port restrictions on Streamlit Community Cloud. Enable the Gmail API in a
+Google Cloud project, configure OAuth consent for the Gmail
+`https://www.googleapis.com/auth/gmail.send` scope, and create an OAuth refresh
+token for the sending account. Google's
+[web server OAuth guide](https://developers.google.com/identity/protocols/oauth2/web-server)
+and Gmail [send messages guide](https://developers.google.com/gmail/api/guides/sending)
+describe the setup and API.
+
+To obtain the refresh token, create a Web application OAuth client with
+`https://developers.google.com/oauthplayground` as an authorized redirect URI.
+In [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/),
+enable **Use your own OAuth credentials** and enter that client's ID and
+secret. Request the Gmail send scope and complete the authorization and token
+exchange steps. Keep the refresh token private. If the OAuth consent screen is
+in testing mode, add the sending account as a test user; Google may expire
+testing refresh tokens after seven days.
+
+Add these values to `.streamlit/secrets.toml` or the deployment's secrets:
+```toml
+GMAIL_CLIENT_ID = "your-oauth-client-id"
+GMAIL_CLIENT_SECRET = "your-oauth-client-secret"
+GMAIL_REFRESH_TOKEN = "your-oauth-refresh-token"
+EMAIL_FROM = "your-account@gmail.com"
+```
+Never commit these credentials or share them in chat. `EMAIL_FROM` must be the
+Gmail account authorized by the refresh token or one of its configured aliases.
+
+## Tests
+```bash
+python -m pytest tests/ -v
+```
 
 ## 💡 What I Learned
 
